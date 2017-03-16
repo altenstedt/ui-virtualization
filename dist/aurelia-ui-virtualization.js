@@ -131,15 +131,19 @@ export class ArrayVirtualRepeatStrategy extends ArrayRepeatStrategy {
       viewsLength--;
       repeat.removeView(viewsLength, true);
     }
+
+    // Recalculate the number of views after removal
+    viewsLength = repeat.viewCount();
+
     // avoid repeated evaluating the property-getter for the "local" property.
     let local = repeat.local;
 
     let first = repeat._getIndexOfFirstView();
 
-    // Handle the case when the new array is smaller than the items already
-    // rendered
+    // Handle the case when the provided items array is smaller 
+    // than the items already rendered in the view.
     if (first + viewsLength >= itemsLength) {
-      first = 0;
+      first = Math.max(0, itemsLength - viewsLength);
     }
 
     // re-evaluate bindings on existing views.

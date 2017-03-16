@@ -27,12 +27,14 @@ export let ArrayVirtualRepeatStrategy = class ArrayVirtualRepeatStrategy extends
       repeat.removeView(viewsLength, true);
     }
 
+    viewsLength = repeat.viewCount();
+
     let local = repeat.local;
 
     let first = repeat._getIndexOfFirstView();
 
     if (first + viewsLength >= itemsLength) {
-      first = 0;
+      first = Math.max(0, itemsLength - viewsLength);
     }
 
     for (let i = 0; i < viewsLength; i++) {

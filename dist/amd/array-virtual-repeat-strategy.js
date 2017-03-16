@@ -66,12 +66,14 @@ define(['exports', 'aurelia-templating-resources', './utilities'], function (exp
         repeat.removeView(viewsLength, true);
       }
 
+      viewsLength = repeat.viewCount();
+
       var local = repeat.local;
 
       var first = repeat._getIndexOfFirstView();
 
       if (first + viewsLength >= itemsLength) {
-        first = 0;
+        first = Math.max(0, itemsLength - viewsLength);
       }
 
       for (var i = 0; i < viewsLength; i++) {
