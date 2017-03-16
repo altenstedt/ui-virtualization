@@ -356,8 +356,8 @@ export let VirtualRepeat = (_dec = customAttribute('virtual-repeat'), _dec2 = in
   }
 
   _adjustBufferHeights() {
-    this.topBuffer.style.height = `${ this._topBufferHeight }px`;
-    this.bottomBuffer.style.height = `${ this._bottomBufferHeight }px`;
+    this.topBuffer.style.height = `${this._topBufferHeight}px`;
+    this.bottomBuffer.style.height = `${this._bottomBufferHeight}px`;
   }
 
   _unsubscribeCollection() {
@@ -439,9 +439,9 @@ export let VirtualRepeat = (_dec = customAttribute('virtual-repeat'), _dec2 = in
     if (this._bottomBufferHeight < 0) {
       this._bottomBufferHeight = 0;
     }
-    this.bottomBuffer.style.height = `${ this._bottomBufferHeight }px`;
+    this.bottomBuffer.style.height = `${this._bottomBufferHeight}px`;
     this._topBufferHeight = 0;
-    this.topBuffer.style.height = `${ this._topBufferHeight }px`;
+    this.topBuffer.style.height = `${this._topBufferHeight}px`;
 
     this.scrollContainer.scrollTop = 0;
     this._first = 0;

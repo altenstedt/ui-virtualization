@@ -21,7 +21,6 @@ export let ArrayVirtualRepeatStrategy = class ArrayVirtualRepeatStrategy extends
   _inPlaceProcessItems(repeat, items) {
     let itemsLength = items.length;
     let viewsLength = repeat.viewCount();
-    let first = repeat._getIndexOfFirstView();
 
     while (viewsLength > itemsLength) {
       viewsLength--;
@@ -29,6 +28,12 @@ export let ArrayVirtualRepeatStrategy = class ArrayVirtualRepeatStrategy extends
     }
 
     let local = repeat.local;
+
+    let first = repeat._getIndexOfFirstView();
+
+    if (first + viewsLength >= itemsLength) {
+      first = 0;
+    }
 
     for (let i = 0; i < viewsLength; i++) {
       let view = repeat.view(i);

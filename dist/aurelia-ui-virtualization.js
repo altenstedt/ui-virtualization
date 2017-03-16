@@ -126,7 +126,6 @@ export class ArrayVirtualRepeatStrategy extends ArrayRepeatStrategy {
   _inPlaceProcessItems(repeat: VirtualRepeat, items: Array<any>): void {
     let itemsLength = items.length;
     let viewsLength = repeat.viewCount();
-    let first = repeat._getIndexOfFirstView();
     // remove unneeded views.
     while (viewsLength > itemsLength) {
       viewsLength--;
@@ -134,6 +133,15 @@ export class ArrayVirtualRepeatStrategy extends ArrayRepeatStrategy {
     }
     // avoid repeated evaluating the property-getter for the "local" property.
     let local = repeat.local;
+
+    let first = repeat._getIndexOfFirstView();
+
+    // Handle the case when the new array is smaller than the items already
+    // rendered
+    if (first + viewsLength >= itemsLength) {
+      first = 0;
+    }
+
     // re-evaluate bindings on existing views.
     for (let i = 0; i < viewsLength; i++) {
       let view = repeat.view(i);

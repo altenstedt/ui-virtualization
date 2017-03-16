@@ -60,7 +60,6 @@ define(['exports', 'aurelia-templating-resources', './utilities'], function (exp
     ArrayVirtualRepeatStrategy.prototype._inPlaceProcessItems = function _inPlaceProcessItems(repeat, items) {
       var itemsLength = items.length;
       var viewsLength = repeat.viewCount();
-      var first = repeat._getIndexOfFirstView();
 
       while (viewsLength > itemsLength) {
         viewsLength--;
@@ -68,6 +67,12 @@ define(['exports', 'aurelia-templating-resources', './utilities'], function (exp
       }
 
       var local = repeat.local;
+
+      var first = repeat._getIndexOfFirstView();
+
+      if (first + viewsLength >= itemsLength) {
+        first = 0;
+      }
 
       for (var i = 0; i < viewsLength; i++) {
         var view = repeat.view(i);
@@ -113,22 +118,20 @@ define(['exports', 'aurelia-templating-resources', './utilities'], function (exp
 
       var maybePromise = this._runSplices(repeat, array.slice(0), splices);
       if (maybePromise instanceof Promise) {
-        (function () {
-          var queuedSplices = repeat.__queuedSplices = [];
+        var queuedSplices = repeat.__queuedSplices = [];
 
-          var runQueuedSplices = function runQueuedSplices() {
-            if (!queuedSplices.length) {
-              delete repeat.__queuedSplices;
-              delete repeat.__array;
-              return;
-            }
+        var runQueuedSplices = function runQueuedSplices() {
+          if (!queuedSplices.length) {
+            delete repeat.__queuedSplices;
+            delete repeat.__array;
+            return;
+          }
 
-            var nextPromise = _this2._runSplices(repeat, repeat.__array, queuedSplices) || Promise.resolve();
-            nextPromise.then(runQueuedSplices);
-          };
+          var nextPromise = _this2._runSplices(repeat, repeat.__array, queuedSplices) || Promise.resolve();
+          nextPromise.then(runQueuedSplices);
+        };
 
-          maybePromise.then(runQueuedSplices);
-        })();
+        maybePromise.then(runQueuedSplices);
       }
     };
 
