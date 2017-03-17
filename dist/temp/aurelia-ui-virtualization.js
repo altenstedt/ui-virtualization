@@ -189,7 +189,7 @@ var ArrayVirtualRepeatStrategy = exports.ArrayVirtualRepeatStrategy = function (
     repeat.removeAllViews();
 
     for (var i = 0; i < Math.min(viewsLength, items.length); i++) {
-      var overrideContext = (0, _aureliaTemplatingResources.createFullOverrideContext)(repeat, items[i], i, itemsLength);
+      var overrideContext = (0, _aureliaTemplatingResources.createFullOverrideContext)(repeat, items[i], i, items.length);
       repeat.addView(overrideContext.bindingContext, overrideContext);
     }
   };

@@ -14,7 +14,7 @@ export let ArrayVirtualRepeatStrategy = class ArrayVirtualRepeatStrategy extends
     repeat.removeAllViews();
 
     for (let i = 0; i < Math.min(viewsLength, items.length); i++) {
-      let overrideContext = createFullOverrideContext(repeat, items[i], i, itemsLength);
+      let overrideContext = createFullOverrideContext(repeat, items[i], i, items.length);
       repeat.addView(overrideContext.bindingContext, overrideContext);
     }
   }

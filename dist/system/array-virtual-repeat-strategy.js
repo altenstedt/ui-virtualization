@@ -62,7 +62,7 @@ System.register(['aurelia-templating-resources', './utilities'], function (_expo
           repeat.removeAllViews();
 
           for (var i = 0; i < Math.min(viewsLength, items.length); i++) {
-            var overrideContext = createFullOverrideContext(repeat, items[i], i, itemsLength);
+            var overrideContext = createFullOverrideContext(repeat, items[i], i, items.length);
             repeat.addView(overrideContext.bindingContext, overrideContext);
           }
         };
