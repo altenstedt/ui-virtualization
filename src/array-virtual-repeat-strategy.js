@@ -16,20 +16,7 @@ export class ArrayVirtualRepeatStrategy extends ArrayRepeatStrategy {
   * @param items The new array instance.
   */
   instanceChanged(repeat: VirtualRepeat, items: Array<any>): void {
-    let itemsLength = items.length;
-    let viewsLength = repeat.viewCount();
-    let first = repeat._getIndexOfFirstView();
-
-    // remove unneeded views.
-    while (viewsLength > itemsLength) {
-      viewsLength--;
-      repeat.removeView(viewsLength, true);
-    }
-
-    for (let i = 0; i < viewsLength; i++) {
-      let overrideContext = createFullOverrideContext(repeat, items[i], i, items.length);
-      repeat.addView(overrideContext.bindingContext, overrideContext);
-    }
+    this._inPlaceProcessItems(repeat, items);
   }
 
   _standardProcessInstanceChanged(repeat: VirtualRepeat, items: Array<any>): void {
