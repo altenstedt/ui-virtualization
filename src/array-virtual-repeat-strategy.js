@@ -16,12 +16,17 @@ export class ArrayVirtualRepeatStrategy extends ArrayRepeatStrategy {
   * @param items The new array instance.
   */
   instanceChanged(repeat: VirtualRepeat, items: Array<any>): void {
-    let first = repeat._getIndexOfFirstView();
+    let itemsLength = items.length;
     let viewsLength = repeat.viewCount();
+    let first = repeat._getIndexOfFirstView();
 
-    repeat.removeAllViews();
+    // remove unneeded views.
+    while (viewsLength > itemsLength) {
+      viewsLength--;
+      repeat.removeView(viewsLength, true);
+    }
 
-    for (let i = 0; i < Math.min(viewsLength, items.length); i++) {
+    for (let i = 0; i < viewsLength; i++) {
       let overrideContext = createFullOverrideContext(repeat, items[i], i, items.length);
       repeat.addView(overrideContext.bindingContext, overrideContext);
     }
@@ -37,26 +42,17 @@ export class ArrayVirtualRepeatStrategy extends ArrayRepeatStrategy {
   _inPlaceProcessItems(repeat: VirtualRepeat, items: Array<any>): void {
     let itemsLength = items.length;
     let viewsLength = repeat.viewCount();
+    let first = repeat._getIndexOfFirstView();
     // remove unneeded views.
     while (viewsLength > itemsLength) {
       viewsLength--;
       repeat.removeView(viewsLength, true);
     }
 
-    // Recalculate the number of views after removal
-    viewsLength = repeat.viewCount();
+    first = Math.min(first, itemsLength - viewsLength);
 
     // avoid repeated evaluating the property-getter for the "local" property.
     let local = repeat.local;
-
-    let first = repeat._getIndexOfFirstView();
-
-    // Handle the case when the provided items array is smaller 
-    // than the items already rendered in the view.
-    if (first + viewsLength >= itemsLength) {
-      first = itemsLength - viewsLength;
-    }
-
     // re-evaluate bindings on existing views.
     for (let i = 0; i < viewsLength; i++) {
       let view = repeat.view(i);
