@@ -56,7 +56,7 @@ var ArrayVirtualRepeatStrategy = exports.ArrayVirtualRepeatStrategy = function (
     var first = repeat._getIndexOfFirstView();
 
     if (first + viewsLength >= itemsLength) {
-      first = Math.max(0, itemsLength - viewsLength);
+      first = itemsLength - viewsLength;
     }
 
     for (var i = 0; i < viewsLength; i++) {

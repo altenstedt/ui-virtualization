@@ -34,7 +34,7 @@ export let ArrayVirtualRepeatStrategy = class ArrayVirtualRepeatStrategy extends
     let first = repeat._getIndexOfFirstView();
 
     if (first + viewsLength >= itemsLength) {
-      first = Math.max(0, itemsLength - viewsLength);
+      first = itemsLength - viewsLength;
     }
 
     for (let i = 0; i < viewsLength; i++) {

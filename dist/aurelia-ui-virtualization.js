@@ -143,7 +143,7 @@ export class ArrayVirtualRepeatStrategy extends ArrayRepeatStrategy {
     // Handle the case when the provided items array is smaller 
     // than the items already rendered in the view.
     if (first + viewsLength >= itemsLength) {
-      first = Math.max(0, itemsLength - viewsLength);
+      first = itemsLength - viewsLength;
     }
 
     // re-evaluate bindings on existing views.
