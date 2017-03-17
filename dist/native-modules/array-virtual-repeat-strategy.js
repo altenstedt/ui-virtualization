@@ -22,7 +22,15 @@ export var ArrayVirtualRepeatStrategy = function (_ArrayRepeatStrategy) {
   };
 
   ArrayVirtualRepeatStrategy.prototype.instanceChanged = function instanceChanged(repeat, items) {
-    this._inPlaceProcessItems(repeat, items);
+    var first = repeat._getIndexOfFirstView();
+    var viewsLength = repeat.viewCount();
+
+    repeat.removeAllViews();
+
+    for (var i = 0; i < Math.min(viewsLength, items.length); i++) {
+      var overrideContext = createFullOverrideContext(repeat, items[i], i, itemsLength);
+      repeat.addView(overrideContext.bindingContext, overrideContext);
+    }
   };
 
   ArrayVirtualRepeatStrategy.prototype._standardProcessInstanceChanged = function _standardProcessInstanceChanged(repeat, items) {

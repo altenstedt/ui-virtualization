@@ -8,7 +8,15 @@ export let ArrayVirtualRepeatStrategy = class ArrayVirtualRepeatStrategy extends
   }
 
   instanceChanged(repeat, items) {
-    this._inPlaceProcessItems(repeat, items);
+    let first = repeat._getIndexOfFirstView();
+    let viewsLength = repeat.viewCount();
+
+    repeat.removeAllViews();
+
+    for (let i = 0; i < Math.min(viewsLength, items.length); i++) {
+      let overrideContext = createFullOverrideContext(repeat, items[i], i, itemsLength);
+      repeat.addView(overrideContext.bindingContext, overrideContext);
+    }
   }
 
   _standardProcessInstanceChanged(repeat, items) {
