@@ -56,15 +56,7 @@ System.register(['aurelia-templating-resources', './utilities'], function (_expo
         };
 
         ArrayVirtualRepeatStrategy.prototype.instanceChanged = function instanceChanged(repeat, items) {
-          var first = repeat._getIndexOfFirstView();
-          var viewsLength = repeat.viewCount();
-
-          repeat.removeAllViews();
-
-          for (var i = 0; i < Math.min(viewsLength, items.length); i++) {
-            var overrideContext = createFullOverrideContext(repeat, items[i], i, items.length);
-            repeat.addView(overrideContext.bindingContext, overrideContext);
-          }
+          this._inPlaceProcessItems(repeat, items);
         };
 
         ArrayVirtualRepeatStrategy.prototype._standardProcessInstanceChanged = function _standardProcessInstanceChanged(repeat, items) {
@@ -77,21 +69,16 @@ System.register(['aurelia-templating-resources', './utilities'], function (_expo
         ArrayVirtualRepeatStrategy.prototype._inPlaceProcessItems = function _inPlaceProcessItems(repeat, items) {
           var itemsLength = items.length;
           var viewsLength = repeat.viewCount();
+          var first = repeat._getIndexOfFirstView();
 
           while (viewsLength > itemsLength) {
             viewsLength--;
             repeat.removeView(viewsLength, true);
           }
 
-          viewsLength = repeat.viewCount();
+          first = Math.min(first, itemsLength - viewsLength);
 
           var local = repeat.local;
-
-          var first = repeat._getIndexOfFirstView();
-
-          if (first + viewsLength >= itemsLength) {
-            first = itemsLength - viewsLength;
-          }
 
           for (var i = 0; i < viewsLength; i++) {
             var view = repeat.view(i);
